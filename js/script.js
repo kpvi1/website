@@ -3,21 +3,7 @@ const songs = ['assets/music.mp3', 'assets/music1.mp3', 'assets/music2.mp3']; //
 let currentSongIndex = 0; // Index of the current song
 
 function playNextSong() {
-    // new audio element
-    var audio = new Audio(songs[currentSongIndex]);
-    
-    // audio player
-    audio.loop = false; // Don't loop the song itself
-    audio.volume = 0.4;
-
-    // When song ends, play the next song
-    audio.addEventListener('ended', () => {
-        // next song in the array
-        currentSongIndex = (currentSongIndex + 1) % songs.length; // Loops back to the first song when reaching the end
-        playNextSong(); //play next song
-    });
-
-    audio.play(); // Start playing song
+    // Audio playback disabled
 }
 
 function userHasClicked() {
@@ -37,11 +23,24 @@ function userHasClicked() {
 }
 
 function updateFlicker() {
-    const randomOpacity = Math.random() * 0.75 + 0.75;
-
-    const flickerTexts = document.querySelectorAll('.flickertext').forEach(element => {
-        element.style.setProperty('--rand', randomOpacity);
+    const flickerTexts = document.querySelectorAll('.flickertext');
+    flickerTexts.forEach(element => {
+        if (element.textContent.trim() === 'kpvi') {
+            element.style.opacity = 1;
+            element.style.textShadow = '0 0 8px rgba(255,255,255,0.7), 0 0 16px rgba(255,255,255,0.4)';
+        } else {
+            element.style.opacity = 1;
+            element.style.textShadow = 'none';
+        }
     });
 }
 
-setInterval(updateFlicker, 500);
+let lastFlicker = 0;
+function flickerLoop(ts) {
+    if (!lastFlicker || ts - lastFlicker >= 1000/120) {
+        updateFlicker();
+        lastFlicker = ts;
+    }
+    requestAnimationFrame(flickerLoop);
+}
+requestAnimationFrame(flickerLoop);

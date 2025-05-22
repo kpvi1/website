@@ -7,54 +7,127 @@
   </title>
   <meta content="well i exist..." property="og:title"/>
   <meta content="im going crazy atp." property="og:description"/>
-  <meta content="https://kpvi1.github.io/website/" property="og:url"/>
+  <meta content="https://kpvi1.github.io/kvcper/" property="og:url"/>
   <meta content="website" property="og:type"/>
   <link rel="stylesheet" href="style.css">
   <script type="application/javascript" src="js/script.js"></script>
   <script type="application/javascript" src="js/sparkle.js"></script>
-  <script type="application/javascript" src="js/get touched.js"></script>|
-  <script type="application/javascript" src="js/log.js"></script>|
-  <script></script>
+  <script type="application/javascript" src="js/get touched.js"></script>
+  <script type="application/javascript" src="js/log.js"></script>
+  <script type="application/javascript" src="js/shootingstars.js"></script>
  </head>
  <body>
     <div onclick="userHasClicked()" id="flexboxcontainer">
-        <div class="clicktocontinuecontainer">
-            <p class="center accent">click</p>
-            <p class="center">anywhere</p>
-            <p class="center">to</p>
-            <p class="center">continue</p>
-        </div>
+      <div class="clicktocontinuecontainer">
+        <p class="center accent glow-white">click</p>
+        <p class="center glow-white">anywhere</p>
+        <p class="center glow-white">to</p>
+        <p class="center glow-white">continue</p>
+      </div>
+      <style>
+        .glow-white {
+          text-shadow: 0 0 8px #fff, 0 0 16px #fff, 0 0 24px #fff;
+          color: inherit;
+        }
+      </style>
     </div>
   <div id="hiddencontainer">
-   <h1 class="accent flickertext" id="niggertext" style="--rand: 0.7909047163525016;">
-    kpvi
-   </h1>
-   <p class="flickertext accent1" style="--rand: 0.7909047163525016;">
-    &lt; I aspire to be someone &gt;
-   </p>
-   <hr class="solid flickertext" style="--rand: 0.7909047163525016;"/>
-   <div class="flex-row flickertext" style="--rand: 0.7909047163525016;">
-    <a href="https://discord.com/users/672810353628938260">
-        <img src="assets/discord.png" alt="Discord" style="width: 24px; height: 24px;">
-      </a>
-      <p class="gray-accent">
-        *
-      </p>
-      <a href="">
-        <img src="assets/telegram.png" alt="Telegram" style="width: 24px; height: 24px;">
-      </a>
-      <p class="gray-accent">
-        *
-      </p>
-      <a href="https://kpvi1.github.io/website/">
-        <img src="assets/internet.png" alt="Site" style="width: 24px; height: 24px;">
-      </a>      
-   </div>
-   <div id="viewercount-container">
-    <p id="viewercount">
-     view count: 414
-    </p>
-   </div>
+  <h1 class="accent flickertext shake glow" id="text" style="--rand: 0.7909047163525016;">
+   kpvi
+  </h1>
+  <style>
+    @keyframes shake {
+      0%   { transform: translate(0, 0) rotate(0deg);}
+      10%  { transform: translate(-0.5px, 0.5px) rotate(-0.2deg);}
+      20%  { transform: translate(-1px, 0.3px) rotate(0.2deg);}
+      30%  { transform: translate(0.7px, 1px) rotate(0deg);}
+      40%  { transform: translate(1px, -0.5px) rotate(0.2deg);}
+      50%  { transform: translate(-0.7px, 0.7px) rotate(-0.2deg);}
+      60%  { transform: translate(-1px, 0.2px) rotate(0deg);}
+      70%  { transform: translate(0.5px, 0.5px) rotate(-0.2deg);}
+      80%  { transform: translate(-0.5px, -0.5px) rotate(0.2deg);}
+      90%  { transform: translate(1px, 1px) rotate(0deg);}
+      100% { transform: translate(0, 0) rotate(0deg);}
+    }
+    .shake {
+      animation: shake 2.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+      display: inline-block;
+    }
+  </style>
+  <p class="flickertext accent1 aspire-animate" style="--rand: 0.7909047163525016;">
+   &lt; I aspire to be someone &gt;
+  </p>
+  <style>
+    @keyframes aspireFadeInUp {
+     0% {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+     }
+     60% {
+      opacity: 1;
+      transform: translateY(-5px) scale(1.02);
+     }
+     100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+     }
+    }
+    .aspire-animate {
+     animation: aspireFadeInUp 2s cubic-bezier(0.4, 0.0, 0.2, 1);
+     display: inline-block;
+    }
+  </style>
+  <hr class="solid flickertext" style="--rand: 0.7909047163525016;"/>
+  <div class="flex-row flickertext modern-icons" style="--rand: 0.7909047163525016; gap: 24px; justify-content: center; align-items: center;">
+    <a href="https://discord.com/users/672810353628938260" class="icon-link" title="Discord">
+      <img src="assets/discord.png" alt="Discord" class="icon-img">
+    </a>
+    <a href="https://www.youtube.com/@forodie_" class="icon-link" title="YouTube">
+      <img src="assets/telegram.png" alt="YouTube" class="icon-img">
+    </a>
+    <a href="https://kpvi1.github.io/website/" class="icon-link" title="Website">
+      <img src="assets/internet.png" alt="Website" class="icon-img">
+    </a>
   </div>
+  <style>
+    .modern-icons {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 24px;
+    }
+    .icon-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s;
+      border-radius: 12px;
+      padding: 6px;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
+    }
+    .icon-link:hover, .icon-link:focus {
+      transform: translateY(-4px) scale(1.08);
+      box-shadow: 0 6px 20px 0 rgba(0,0,0,0.16);
+      background: rgba(255,255,255,0.12);
+    }
+    .icon-img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.10));
+      transition: filter 0.2s;
+      display: block;
+    }
+    .icon-link:hover .icon-img,
+    .icon-link:focus .icon-img {
+      filter: drop-shadow(0 0 12px #fff) brightness(1.1);
+    }
+  </style>
+  <div style="display: flex; flex-direction: column; align-items: center; position: fixed; left: 0; bottom: 24px; width: 100%; z-index: 10;">
+    <iframe style="border-radius:12px; width:320px; height:80px; margin-top:8px;" src="https://open.spotify.com/embed/track/2CGNAOSuO1MEFCbBRgUzjd?utm_source=generator&theme=0" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+</div>
  </body>
 </html>

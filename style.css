@@ -37,9 +37,9 @@ html, body {
 }
 
 h1 {
-    font-family: 'Mario';
+    font-family: 'TopazPlus', 'Courier New', Courier, monospace;
     font-size: 50px;
-    color: #A9A9A9;
+    color: #ffffff;
 }
 
 hr.solid {
@@ -51,12 +51,16 @@ hr.solid {
 }
 
 .accent {
-    color: #333333;
-    text-shadow: #333333 0px 0 50px;
+    color: #e2e2e2;
+    text-shadow:
+        0 0 8px #d1d1d1,
+        0 0 16px #d1d1d1,
+        0 0 32px #5e5d5d,
+        0 0 50px #5e5d5d;
 }
 
 .accent1 {
-    color: rgba(59, 59, 59, 0.5);
+    color: rgba(221, 220, 220, 0.5);
     text-shadow: rgba(134, 134, 134, 0.5), 0px 0 50px;
 }
 
@@ -86,8 +90,28 @@ a:link, a:visited {
 }
 
 .flickertext {
-    --rand: .0;
     animation: flicker 1s infinite;
+    /* --rand is not dynamic in CSS, so use a fixed value or set it via JS if needed */
+    --rand: 0.5;
+}
+
+@keyframes shake {
+    0%   { transform: translate(0, 0) rotate(0deg);}
+    10%  { transform: translate(-6px, 6px) rotate(-2deg);}
+    20%  { transform: translate(-12px, 3px) rotate(2deg);}
+    30%  { transform: translate(9px, 12px) rotate(0deg);}
+    40%  { transform: translate(12px, -6px) rotate(2deg);}
+    50%  { transform: translate(-9px, 9px) rotate(-2deg);}
+    60%  { transform: translate(-12px, 3px) rotate(0deg);}
+    70%  { transform: translate(6px, 6px) rotate(-2deg);}
+    80%  { transform: translate(-6px, -6px) rotate(2deg);}
+    90%  { transform: translate(12px, 12px) rotate(0deg);}
+    100% { transform: translate(0, 0) rotate(0deg);}
+}
+
+.shake {
+    animation: shake 1s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+    display: inline-block;
 }
 
 .clicktocontinuecontainer {
