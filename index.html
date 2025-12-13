@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ KVCPER ]</title>
+    <link rel="stylesheet" href="styles.css" >
+</head>
+<head>
+    <style>
+        .pointer-link {
+            cursor: pointer;
+        }
+    </style>
+</head>
+    <div id="overlay">
+        <div id="overlay-text">[ Click anywhere ]</div>
+    </div>
+    <div id="content">
+        <video id="background-video" src="files/background.mp4" autoplay muted loop></video>
+        <audio id="background-music" src="files/song.mp3"></audio>
+        <button id="mute-toggle" aria-label="Toggle background music"></button>
+        <div id="main-text">
+            [ KVCPER ]
+            <div id="quote"></div>
+            <div id="links">
+                <a href="https://www.youtube.com/@forodie_" target="_blank">Youtube</a>
+                <a href="https://steamcommunity.com/id/kpvi/" target="_blank">Steam</a>
+                <a href="https://open.spotify.com/user/us7z2siz3yk4baji7tdrv15tv" target="_blank">Spotify</a>
+                <a href="#" id="discord-link">Discord</a>
+            </div>
+        </div>
+    </div>
+    <div id="notification">Discord username copied to clipboard! (server soon)</div>
+    <script src="scripts.js"></script>
+</body>
+<body oncontextmenu="return false;">
+</body>
+</html>
