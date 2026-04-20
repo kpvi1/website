@@ -28,6 +28,15 @@ body {
     font-size: 1.2em;
 }
 
+#ip-display {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8em;
+    font-family: Consolas, monospace;
+}
+
 #content {
     display: none;
     position: relative;
@@ -90,13 +99,13 @@ body {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(104, 104, 104, 0.26);
+    background: transparent;
     color: white;
     padding: 7px;
-    border-radius: 25px;
+    border-radius: 0;
     display: none;
     transition: opacity 1.0s;
-    box-shadow: 0 0 10px white;
+    box-shadow: none;
     text-align: center;
     font-size: 1em;
 }
@@ -127,6 +136,110 @@ body {
 }
 
 /* Pause icon (default: sound on) */
+/* ── Discord Presence Widget ── */
+#presence {
+    position: absolute;
+    top: calc(50% + 90px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: transparent;
+    border: none;
+    border-radius: 2px;
+    padding: 16px 20px;
+    min-width: 320px;
+    max-width: 420px;
+    opacity: 0;
+    transition: opacity 0.6s;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+#presence.offline {
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    white-space: normal;
+    text-align: center;
+}
+
+#presence.loaded {
+    opacity: 1;
+}
+
+#presence-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+#presence-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+#presence-status-dot {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 18px;
+    height: 18px;
+}
+
+#presence-info {
+    flex: 1;
+    overflow: hidden;
+    text-align: left;
+}
+
+#presence-name {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#presence-activity {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.65);
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#presence-activity span {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#presence-art {
+    width: 52px;
+    height: 52px;
+    border-radius: 2px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#presence-activity span {
+    color: rgba(255,255,255,0.85);
+}
+
+#presence-art {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: none;
+}
+
 #mute-toggle::before {
     width: 4px;
     height: 14px;
