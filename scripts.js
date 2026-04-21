@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const notification = document.getElementById('notification');
     const discordLink = document.getElementById('discord-link');
     const backgroundMusic = document.getElementById('background-music');
-    const muteToggle = document.getElementById('mute-toggle');
     const ipDisplay = document.getElementById('ip-display');
+    const songCredit = document.getElementById('song-credit');
 
     backgroundMusic.loop = true; // Make the song loop
 
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             typeIp(ipText);
         })
         .catch(error => {
-            typeIp('ip: unknown');
+            ipDisplay.textContent = 'ip: unknown';
         });
 
     function typeIp(text) {
@@ -29,6 +29,23 @@ document.addEventListener('DOMContentLoaded', function() {
         function typeChar() {
             if (charIndex < text.length) {
                 ipDisplay.textContent += text.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeChar, 100);
+            }
+        }
+
+        typeChar();
+    }
+
+    function typeSongCredit(text) {
+        console.log('typeSongCredit called with text:', text);
+        console.log('songCredit element:', songCredit);
+        let charIndex = 0;
+        songCredit.textContent = '';
+
+        function typeChar() {
+            if (charIndex < text.length) {
+                songCredit.textContent += text.charAt(charIndex);
                 charIndex++;
                 setTimeout(typeChar, 100);
             }
@@ -64,20 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             overlay.style.display = 'none';
             content.style.display = 'block';
+            const songCreditElement = document.getElementById('song-credit');
+            console.log('songCredit element after display block:', songCreditElement);
+            if (songCreditElement) {
+                typeSongCredit('Gibbs - inny ft. SVM!R');
+            }
         }, 500);
     });
-
-    if (muteToggle) {
-        muteToggle.addEventListener('click', () => {
-            const isMuted = !backgroundMusic.muted;
-            backgroundMusic.muted = isMuted;
-            if (isMuted) {
-                muteToggle.classList.add('muted');
-            } else {
-                muteToggle.classList.remove('muted');
-            }
-        });
-    }
 
     function typeQuote() {
         const quote = quotes[quoteIndex];
