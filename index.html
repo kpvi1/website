@@ -3,41 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[ KVCPER ]</title>
-    <link rel="stylesheet" href="styles.css" >
+    <title>KVCPER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<head>
-    <style>
-        .pointer-link {
-            cursor: pointer;
-        }
-    </style>
-</head>
+<body oncontextmenu="return false;">
+    <!-- Custom cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Preloader / entry -->
     <div id="overlay">
-        <div id="overlay-text">[ Click anywhere ]</div>
+        <div class="loader-grain"></div>
+        <div id="loader-mark">K<span class="serif">v</span>7</div>
+        <h2 id="loader-name">KVCPER</h2>
+        <div id="loader-bar"><span id="loader-bar-fill"></span></div>
+        <div id="loader-enter">
+            <span class="enter-pulse"></span>
+            [ Click anywhere to enter ]
+        </div>
         <div id="ip-display"></div>
     </div>
+
+    <!-- Main content -->
     <div id="content">
-        <video id="background-video" src="files/background.mp4" autoplay muted loop></video>
-        <audio id="background-music" src="files/song.mp3"></audio>
-        <div id="main-text">
-            [ KVCPER ]
-            <div id="quote"></div>
-            <div id="links">
-                <a href="https://www.youtube.com/@forodie_" target="_blank">Youtube</a>
-                <a href="https://steamcommunity.com/id/kpvi/" target="_blank">Steam</a>
-                <a href="https://open.spotify.com/user/31dt53csxcsx2hjcmcasmmat7tqy" target="_blank">Spotify</a>
-                <a href="#" id="discord-link">Discord</a>
+        <video id="background-video" src="files/background.mp4" autoplay muted loop playsinline></video>
+
+        <!-- Top navigation -->
+        <header id="topbar">
+            <a href="#hero" class="brand pointer-link">
+                <span class="brand-serif">kvcper</span>
+                <span class="brand-tag">— ONLINE</span>
+            </a>
+            <div id="clock" class="mono"></div>
+            <button id="nav-discord" class="volt-btn pointer-link" type="button">
+                <span class="dot"></span> DISCORD
+            </button>
+        </header>
+
+        <!-- HERO -->
+        <section id="hero">
+            <svg id="contours" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <g fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M-50,180 C200,120 420,260 620,200 C840,135 980,250 1260,180"/>
+                    <path d="M-50,300 C220,250 400,380 640,320 C880,260 1020,360 1260,300"/>
+                    <path d="M-50,440 C180,400 460,520 700,460 C920,405 1040,500 1260,440"/>
+                    <path d="M-50,580 C240,540 420,650 680,600 C900,558 1060,640 1260,580"/>
+                    <ellipse cx="320" cy="430" rx="170" ry="120"/>
+                    <ellipse cx="820" cy="360" rx="220" ry="150"/>
+                </g>
+            </svg>
+
+            <div class="hero-eyebrow mono">
+                <span>PERSONAL SITE</span><span>EST. 2019</span><span>PL / EU</span>
+            </div>
+
+            <main id="main-text">
+                <h1 id="title" data-text="KVCPER">KVCPER</h1>
+                <p id="subtitle">Music, games &amp; everything in between.</p>
+            </main>
+
+            <!-- Status ticket card -->
+            <div id="status-card">
+                <div class="sc-label mono">NOW PLAYING</div>
+                <div class="sc-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                <div id="song-credit" class="sc-song"></div>
+                <div class="sc-foot mono">KVCPER • LOOPING</div>
+            </div>
+
+            <div class="hero-quote">
+                <span id="quote"></span>
+            </div>
+
+            <div id="scroll-hint" class="mono">SCROLL <span>↓</span></div>
+        </section>
+
+        <!-- Marquee -->
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span>KVCPER ✦ MUSIC ✦ GAMES ✦ VIBES ✦ ONLINE ✦ KVCPER ✦ MUSIC ✦ GAMES ✦ VIBES ✦ ONLINE ✦</span>
+                <span>KVCPER ✦ MUSIC ✦ GAMES ✦ VIBES ✦ ONLINE ✦ KVCPER ✦ MUSIC ✦ GAMES ✦ VIBES ✦ ONLINE ✦</span>
             </div>
         </div>
-        <div id="presence"></div>
-        <div style="display:none">
-        </div>
-        <div id="song-credit"></div>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="about-label mono reveal">( 01 — ABOUT )</div>
+            <p class="about-statement reveal">
+                Just <strong>vibing</strong> online — building <strong>moments</strong>,
+                chasing <strong>sound</strong>, and keeping it <strong>real</strong>
+                on and off the screen.
+            </p>
+        </section>
+
+        <!-- LINKS -->
+        <section id="links-section">
+            <div class="links-head mono reveal">( 02 — FIND ME )</div>
+            <nav id="links">
+                <a class="link-row reveal" href="https://www.youtube.com/@forodie_" target="_blank" rel="noopener">
+                    <span class="lr-num mono">01</span>
+                    <span class="lr-name"><span class="lr-inner" data-text="YouTube">YouTube</span></span>
+                    <span class="lr-arrow">↗</span>
+                </a>
+                <a class="link-row reveal" href="https://steamcommunity.com/id/kpvi/" target="_blank" rel="noopener">
+                    <span class="lr-num mono">02</span>
+                    <span class="lr-name"><span class="lr-inner" data-text="Steam">Steam</span></span>
+                    <span class="lr-arrow">↗</span>
+                </a>
+                <a class="link-row reveal" href="https://open.spotify.com/user/31dt53csxcsx2hjcmcasmmat7tqy" target="_blank" rel="noopener">
+                    <span class="lr-num mono">03</span>
+                    <span class="lr-name"><span class="lr-inner" data-text="Spotify">Spotify</span></span>
+                    <span class="lr-arrow">↗</span>
+                </a>
+                <a class="link-row reveal" href="#" id="discord-link">
+                    <span class="lr-num mono">04</span>
+                    <span class="lr-name"><span class="lr-inner" data-text="Discord">Discord</span></span>
+                    <span class="lr-arrow">⧉</span>
+                </a>
+            </nav>
+        </section>
+
+        <!-- PRESENCE -->
+        <section id="presence-section">
+            <div class="links-head mono reveal">( 03 — STATUS )</div>
+            <div id="presence"></div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer id="footer">
+            <h2 class="footer-statement reveal">ALWAYS<br><span class="serif">online.</span></h2>
+            <div class="footer-bottom">
+                <span class="mono">© 2026 KVCPER</span>
+                <span class="mono">MADE WITH ✦ &amp; NOISE</span>
+            </div>
+        </footer>
+
+        <!-- Mute toggle -->
+        <button id="mute-toggle" class="pointer-link" aria-label="Toggle sound" title="Toggle sound"></button>
     </div>
+
     <div id="notification">Discord username copied to clipboard! (server soon)</div>
+
+    <audio id="background-music" src="files/song.mp3"></audio>
     <script src="scripts.js"></script>
-</body>
-<body oncontextmenu="return false;">
 </body>
 </html>
