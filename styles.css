@@ -257,22 +257,6 @@ a { color: inherit; text-decoration: none; }
 #scroll-hint span { animation: bob 1.4s ease-in-out infinite; }
 
 /* ============================================================
-   Marquee
-   ============================================================ */
-.marquee {
-    position: relative; z-index: 1;
-    background: var(--ink); color: var(--volt);
-    padding: 16px 0; overflow: hidden;
-    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
-}
-.marquee-track { display: flex; width: max-content; animation: marquee 22s linear infinite; }
-.marquee-track span {
-    font-family: var(--font-display);
-    font-size: 28px; text-transform: uppercase; letter-spacing: 0.02em;
-    padding-right: 24px; white-space: nowrap;
-}
-
-/* ============================================================
    ABOUT
    ============================================================ */
 #about {
@@ -365,18 +349,11 @@ a { color: inherit; text-decoration: none; }
 #footer {
     position: relative; z-index: 1;
     background: var(--ink); color: var(--cream);
-    padding: 100px 26px 30px;
+    padding: 40px 26px 30px;
 }
-.footer-statement {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(64px, 20vw, 300px);
-    line-height: .82; text-transform: uppercase; letter-spacing: -0.02em;
-}
-.footer-statement .serif { color: var(--volt); text-transform: none; }
 .footer-bottom {
     display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    margin-top: 50px; padding-top: 20px;
+    padding-top: 20px;
     border-top: 1px solid rgba(236,233,225,.2);
     color: rgba(236,233,225,.6);
 }
@@ -427,7 +404,6 @@ a { color: inherit; text-decoration: none; }
 @keyframes blink { 0%,50% { opacity: 1; } 50.01%,100% { opacity: 0; } }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 @keyframes eq { 0%,100% { height: 8px; } 50% { height: 24px; } }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes contourDrift { from { transform: translate(0,0) scale(1.05); } to { transform: translate(-3%,2%) scale(1.12); } }
 
 /* ============================================================
