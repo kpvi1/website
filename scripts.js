@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             overlay.style.display = 'none';
             content.style.display = 'block';
+            content.classList.add('entered');
             const songCreditElement = document.getElementById('song-credit');
             console.log('songCredit element after display block:', songCreditElement);
             if (songCreditElement) {
@@ -242,4 +243,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fetchPresence();
     setInterval(fetchPresence, 10000);
+});
+
+// ── Minimal custom cursor (subtle, raw) ──
+document.addEventListener('DOMContentLoaded', function () {
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!finePointer) return;
+
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    if (!dot || !ring) return;
+
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    let rx = mx, ry = my;
+
+    window.addEventListener('mousemove', (e) => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top = my + 'px';
+    });
+    window.addEventListener('mousedown', () => ring.classList.add('clicking'));
+    window.addEventListener('mouseup', () => ring.classList.remove('clicking'));
+
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest('a, button, .pointer-link')) ring.classList.add('hovering');
+    });
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest('a, button, .pointer-link')) ring.classList.remove('hovering');
+    });
+
+    (function loop() {
+        rx += (mx - rx) * 0.2;
+        ry += (my - ry) * 0.2;
+        ring.style.left = rx + 'px';
+        ring.style.top = ry + 'px';
+        requestAnimationFrame(loop);
+    })();
 });

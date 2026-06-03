@@ -253,3 +253,100 @@ body {
     border-bottom: 7px solid transparent;
     border-left: 10px solid #ffffff;
 }
+
+/* ============================================================
+   Subtle polish (keeps the raw style, adds smooth motion)
+   ============================================================ */
+
+/* Hide native cursor in favour of a minimal custom one */
+body { cursor: none; }
+#links a, #discord-link, .pointer-link, #mute-toggle { cursor: none; }
+
+#cursor-dot,
+#cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+}
+#cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+}
+#cursor-ring {
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transition: width .22s ease, height .22s ease, opacity .22s ease;
+}
+#cursor-ring.hovering { width: 42px; height: 42px; }
+#cursor-ring.clicking { width: 18px; height: 18px; }
+
+/* Gentle breathing on the entry prompt */
+#overlay-text { animation: kv-breathe 2.4s ease-in-out infinite; }
+
+/* Smooth fade-in of the content once entered */
+#content { opacity: 0; }
+#content.entered { animation: kv-fade 0.9s ease forwards; }
+
+/* Subtle staggered rise of the main block + links */
+#content.entered #main-text { animation: kv-fade 1s ease both; }
+#content.entered #links a {
+    opacity: 0;
+    animation: kv-fade 0.6s ease forwards;
+}
+#content.entered #links a:nth-child(1) { animation-delay: .35s; }
+#content.entered #links a:nth-child(2) { animation-delay: .45s; }
+#content.entered #links a:nth-child(3) { animation-delay: .55s; }
+#content.entered #links a:nth-child(4) { animation-delay: .65s; }
+
+/* Smoother link transition + faint lift */
+#links a {
+    transition: opacity .3s ease, transform .3s ease, text-shadow .3s ease;
+}
+#links a:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* Blinking terminal caret after the quote (pure CSS) */
+#quote::after {
+    content: "_";
+    margin-left: 2px;
+    animation: kv-blink 1s steps(1) infinite;
+}
+
+@keyframes kv-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes kv-breathe {
+    0%, 100% { opacity: .5; }
+    50%      { opacity: 1; }
+}
+@keyframes kv-blink {
+    0%, 50%      { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+}
+
+/* Touch / coarse pointers: restore the native cursor */
+@media (hover: none), (pointer: coarse) {
+    body, #links a, #discord-link, .pointer-link, #mute-toggle { cursor: auto; }
+    #cursor-dot, #cursor-ring { display: none; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    #content.entered,
+    #content.entered #main-text,
+    #content.entered #links a,
+    #overlay-text,
+    #quote::after { animation: none; }
+    #content.entered { opacity: 1; }
+    #content.entered #links a { opacity: 1; }
+}
