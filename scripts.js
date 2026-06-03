@@ -268,3 +268,36 @@ document.addEventListener('DOMContentLoaded', function () {
         requestAnimationFrame(loop);
     })();
 });
+
+/* ============================================================
+   Title "torch" reveal — cursor uncovers the volt version
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const title = document.getElementById('title');
+    const hero = document.getElementById('hero');
+    if (!title || !hero) return;
+
+    const SPOT = 150;
+    let tx = -400, ty = -400, cx = -400, cy = -400, active = false;
+
+    hero.addEventListener('mousemove', (e) => {
+        const r = title.getBoundingClientRect();
+        tx = e.clientX - r.left;
+        ty = e.clientY - r.top;
+        if (!active) { cx = tx; cy = ty; active = true; }
+        title.style.setProperty('--spot', SPOT + 'px');
+    });
+    hero.addEventListener('mouseleave', () => {
+        active = false;
+        title.style.setProperty('--spot', '0px');
+    });
+
+    (function loop() {
+        cx += (tx - cx) * 0.18;
+        cy += (ty - cy) * 0.18;
+        title.style.setProperty('--mx', cx + 'px');
+        title.style.setProperty('--my', cy + 'px');
+        requestAnimationFrame(loop);
+    })();
+});
