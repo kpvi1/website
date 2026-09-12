@@ -9,7 +9,24 @@ body, html {
 
 body {
     cursor: url("files/cursors/cur.png"), auto;
-  }
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 3px, 3px 100%;
+    z-index: 100;
+    pointer-events: none;
+    animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.95; }
+    50% { opacity: 0.85; }
+    100% { opacity: 0.95; }
+}
 
 #overlay {
     position: absolute;
@@ -25,7 +42,9 @@ body {
 
 #overlay-text {
     color: rgb(255, 255, 255);
+    font-family: Consolas, monospace;
     font-size: 1.2em;
+    letter-spacing: 2px;
 }
 
 #ip-display {
@@ -40,7 +59,8 @@ body {
 #song-credit {
     position: absolute;
     bottom: 20px;
-    left: 20px;
+    right: 20px;
+    left: auto;
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.8em;
     font-family: Consolas, monospace;
@@ -53,6 +73,12 @@ body {
     width: 100%;
     height: 100%;
     background: black;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; filter: brightness(0.5); }
+    to { opacity: 1; filter: brightness(1); }
 }
 
 #background-video {
@@ -65,43 +91,60 @@ body {
 
 #main-text {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;
+    font-family: Consolas, monospace;
+    font-size: 3em;
+    letter-spacing: 4px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+#title-text {
+    display: inline-block;
+    transform: translateZ(40px);
 }
 
 #quote {
     margin-top: 20px;
+    font-family: Consolas, monospace;
+    font-size: 0.35em;
+    color: rgba(255, 255, 255, 0.7);
+    min-height: 40px;
+    transform: translateZ(20px);
 }
 
 #links {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    transform-style: preserve-3d;
+    transform: translateZ(30px);
 }
 
 #links a {
     color: white;
-    margin: 0 10px;
+    font-family: Consolas, monospace;
+    font-size: 0.35em;
     text-decoration: none;
     position: relative;
+    padding: 5px 10px;
+    transition: all 0.3s;
+    transform: translateZ(0px);
+}
+
+#links a:hover {
+    opacity: 0.9;
+    text-shadow: 2px 0 rgba(255, 0, 0, 0.8), -2px 0 rgba(0, 255, 255, 0.8);
+    transform: translateZ(20px) scale(1.1);
 }
 
 #links a::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    transition: opacity 0.5s;
-}
-
-#links a:hover::after {
-    opacity: 1;
+    display: none;
 }
 
 #notification {
@@ -123,7 +166,7 @@ body {
 /* ── Discord Presence Widget ── */
 #presence {
     position: absolute;
-    top: calc(50% + 90px);
+    top: calc(45% + 140px);
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -131,14 +174,19 @@ body {
     gap: 16px;
     background: transparent;
     border: none;
-    border-radius: 2px;
     padding: 16px 20px;
     min-width: 320px;
     max-width: 420px;
     opacity: 0;
-    transition: opacity 0.6s;
+    transition: opacity 0.6s, transform 0.1s ease-out;
     white-space: nowrap;
     z-index: 5;
+    font-family: Consolas, monospace;
+    transform-style: preserve-3d;
+}
+
+#presence > div, #presence > img {
+    transform: translateZ(20px);
 }
 
 #presence.offline {

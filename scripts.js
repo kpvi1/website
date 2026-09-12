@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const content = document.getElementById('content');
     const quoteElement = document.getElementById('quote');
     const mainTextElement = document.getElementById('main-text');
+    const titleText = document.getElementById('title-text');
     const notification = document.getElementById('notification');
     const discordLink = document.getElementById('discord-link');
     const backgroundMusic = document.getElementById('background-music');
@@ -137,23 +138,71 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function glitchText() {
-        let originalText = "[ KVCPER ]";
-        let glitchVariants = ["[ K ]", "[ KV ]", "[ KVC ]", "[ KVCP ]", "[ KVCPE ]", "[ KVCPER ]", "[ KVCPER ]", "[ KVCPE ]", "[ KVCP ]", "[ KVC ]", "[ KV ]", "[ K ]", "[ K ]", "[ KP ]", "[ KPV ]", "[ KPVI ]", "[ KPVI ]", "[ KPV ]", "[ KP ]", "[ K ]"];
-        let glitchIndex = 0;
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
+    
+    function scrambleEffect(textNode, finalString, durationMs = 1500, updateTitle = false) {
+        let iterations = 0;
+        const maxIterations = finalString.length * 3;
+        const intervalTime = durationMs / maxIterations;
+        
+        clearInterval(textNode.scrambleInterval);
+        textNode.scrambleInterval = setInterval(() => {
+            const scrambled = finalString.split('').map((letter, index) => {
+                if (index < iterations / 3) {
+                    return finalString[index];
+                }
+                return chars[Math.floor(Math.random() * chars.length)];
+            }).join('');
+            
+            textNode.textContent = scrambled;
+            if (updateTitle) document.title = scrambled;
 
-        function updateText() {
-            const text = glitchVariants[glitchIndex];
-            mainTextElement.firstChild.textContent = text;
-            document.title = text; // Update the title with the glitched text
-            glitchIndex = (glitchIndex + 1) % glitchVariants.length;
-            setTimeout(updateText, 300); // Adjust the timing for the glitch effect
-        }
-
-        updateText();
+            if (iterations >= maxIterations) {
+                clearInterval(textNode.scrambleInterval);
+                textNode.textContent = finalString;
+                if (updateTitle) document.title = finalString;
+            }
+            iterations++;
+        }, intervalTime);
     }
 
-    glitchText();
+    scrambleEffect(titleText, "[ KVCPER ]", 2500, true);
+    
+    // Add scramble on hover for title
+    titleText.addEventListener('mouseenter', () => {
+        scrambleEffect(titleText, "[ KVCPER ]", 800, true);
+    });
+
+    // Add scramble on hover for links
+    const allLinks = document.querySelectorAll('#links a');
+    allLinks.forEach(link => {
+        const originalText = link.textContent;
+        link.addEventListener('mouseenter', () => {
+            // Need to scramble the link's text node, not the whole link to avoid losing structure if any
+            scrambleEffect(link.firstChild, originalText, 500);
+        });
+    });
+
+    // 3D Parallax Tilt Effect
+    const presenceEl = document.getElementById('presence');
+    document.addEventListener('mousemove', (e) => {
+        // Push effect: side where the mouse is moves AWAY from the viewer
+        const rotateY = (e.pageX - window.innerWidth / 2) / 40;
+        const rotateX = -(e.pageY - window.innerHeight / 2) / 40;
+        
+        mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+        
+        if (presenceEl) {
+            presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+        }
+    });
+
+    document.addEventListener('mouseleave', () => {
+        mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+        if (presenceEl) {
+            presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+        }
+    });
 });
 
 // ── Discord Presence via Lanyard ──
