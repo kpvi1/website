@@ -217,63 +217,119 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 3D Parallax Tilt Effect with smooth cursor movement
     const presenceEl = document.getElementById('presence');
-    let mouseX = 0, mouseY = 0, smoothX = 0, smoothY = 0;
+    let smoothX = 0, smoothY = 0;
     let rafId = null;
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.pageX;
-        mouseY = e.pageY;
-        if (!rafId) rafId = requestAnimationFrame(updateTilt);
-    });
+    // Detect mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 
-    function updateTilt() {
-        // Push effect: side where the mouse is moves AWAY from the viewer
-        const targetRotateY = (mouseX - window.innerWidth / 2) / 40;
-        const targetRotateX = -(mouseY - window.innerHeight / 2) / 40;
+    if (isMobile) {
+        // Mobile: Use deviceorientation for 3D parallax, behaves like cursor position
+        let targetRotateX = 0, targetRotateY = 0;
+        let baselineBeta = null, baselineGamma = null;
 
-        // Smooth the cursor movement with lerp
-        smoothX += (targetRotateX - smoothX) * 0.08;
-        smoothY += (targetRotateY - smoothY) * 0.08;
+        window.addEventListener('deviceorientation', (event) => {
+            if (event.beta !== null && event.gamma !== null) {
+                // Capture the neutral holding position as baseline (like screen center for cursor)
+                if (baselineBeta === null) {
+                    baselineBeta = event.beta;
+                    baselineGamma = event.gamma;
+                }
 
-        mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+                // Tilt away from baseline acts like moving the cursor away from center
+                const tiltX = event.gamma - baselineGamma;   // left-right tilt
+                const tiltY = event.beta - baselineBeta;     // front-back tilt
 
-        if (presenceEl) {
-            presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
-        }
+                targetRotateY = tiltX * 0.6;
+                targetRotateX = -tiltY * 0.6;
 
-        // Keep animating while there is still movement to settle
-        if (Math.abs(targetRotateX - smoothX) > 0.01 || Math.abs(targetRotateY - smoothY) > 0.01) {
-            rafId = requestAnimationFrame(updateTilt);
-        } else {
-            smoothX = targetRotateX;
-            smoothY = targetRotateY;
-            rafId = null;
-        }
-    }
+                // Clamp rotation to avoid extreme angles
+                targetRotateX = Math.max(-25, Math.min(25, targetRotateX));
+                targetRotateY = Math.max(-25, Math.min(25, targetRotateY));
 
-    document.addEventListener('mouseleave', () => {
-        if (rafId) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
-        }
-        // Smooth reset back to neutral position
-        mouseX = window.innerWidth / 2;
-        mouseY = window.innerHeight / 2;
-        const reset = () => {
-            smoothX += (0 - smoothX) * 0.1;
-            smoothY += (0 - smoothY) * 0.1;
+                if (!rafId) rafId = requestAnimationFrame(updateTiltMobile);
+            }
+        });
+
+        function updateTiltMobile() {
+            // Smooth the tilt movement with lerp
+            smoothX += (targetRotateX - smoothX) * 0.08;
+            smoothY += (targetRotateY - smoothY) * 0.08;
+
             mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+
             if (presenceEl) {
                 presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
             }
-            if (Math.abs(smoothX) > 0.01 || Math.abs(smoothY) > 0.01) {
-                rafId = requestAnimationFrame(reset);
+
+            // Keep animating while there is still movement to settle
+            if (Math.abs(targetRotateX - smoothX) > 0.01 || Math.abs(targetRotateY - smoothY) > 0.01) {
+                rafId = requestAnimationFrame(updateTiltMobile);
             } else {
+                smoothX = targetRotateX;
+                smoothY = targetRotateY;
                 rafId = null;
             }
-        };
-        rafId = requestAnimationFrame(reset);
-    });
+        }
+    } else {
+        // Desktop: Use mouse position for parallax
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.pageX;
+            mouseY = e.pageY;
+            if (!rafId) rafId = requestAnimationFrame(updateTilt);
+        });
+
+        function updateTilt() {
+            // Push effect: side where the mouse is moves AWAY from the viewer
+            const targetRotateY = (mouseX - window.innerWidth / 2) / 40;
+            const targetRotateX = -(mouseY - window.innerHeight / 2) / 40;
+
+            // Smooth the cursor movement with lerp
+            smoothX += (targetRotateX - smoothX) * 0.08;
+            smoothY += (targetRotateY - smoothY) * 0.08;
+
+            mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+
+            if (presenceEl) {
+                presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+            }
+
+            // Keep animating while there is still movement to settle
+            if (Math.abs(targetRotateX - smoothX) > 0.01 || Math.abs(targetRotateY - smoothY) > 0.01) {
+                rafId = requestAnimationFrame(updateTilt);
+            } else {
+                smoothX = targetRotateX;
+                smoothY = targetRotateY;
+                rafId = null;
+            }
+        }
+
+        document.addEventListener('mouseleave', () => {
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+            // Smooth reset back to neutral position
+            mouseX = window.innerWidth / 2;
+            mouseY = window.innerHeight / 2;
+            const reset = () => {
+                smoothX += (0 - smoothX) * 0.1;
+                smoothY += (0 - smoothY) * 0.1;
+                mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+                if (presenceEl) {
+                    presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+                }
+                if (Math.abs(smoothX) > 0.01 || Math.abs(smoothY) > 0.01) {
+                    rafId = requestAnimationFrame(reset);
+                } else {
+                    rafId = null;
+                }
+            };
+            rafId = requestAnimationFrame(reset);
+        });
+    }
 });
 
 // ── Discord Presence via Lanyard ──
