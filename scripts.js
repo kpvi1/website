@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const quoteElement = document.getElementById('quote');
     const mainTextElement = document.getElementById('main-text');
     const titleText = document.getElementById('title-text');
-    const notification = document.getElementById('notification');
-    const discordLink = document.getElementById('discord-link');
     const backgroundMusic = document.getElementById('background-music');
     const ipDisplay = document.getElementById('ip-display');
     const songCredit = document.getElementById('song-credit');
@@ -21,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             ipDisplay.textContent = 'ip: unknown';
+            startIpGlitch('ip: unknown');
         });
 
     function typeIp(text) {
@@ -32,10 +31,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 ipDisplay.textContent += text.charAt(charIndex);
                 charIndex++;
                 setTimeout(typeChar, 100);
+            } else {
+                startIpGlitch(text);
             }
         }
 
         typeChar();
+    }
+
+    const IP_GLITCH_CHARS = '░▒▓█<>/\\|{}[]#%&$@?';
+
+    function startIpGlitch(text) {
+        setInterval(() => {
+            if (ipDisplay.textContent !== text) return;
+            if (Math.random() > 0.3) return;
+
+            // Glitch 1-2 characters at once for a blockier look
+            const glitchCount = 1 + Math.floor(Math.random() * 2);
+            const chars = text.split('');
+            for (let i = 0; i < glitchCount; i++) {
+                const glitchIndex = Math.floor(Math.random() * chars.length);
+                chars[glitchIndex] = IP_GLITCH_CHARS[Math.floor(Math.random() * IP_GLITCH_CHARS.length)];
+            }
+            ipDisplay.textContent = chars.join('');
+
+            setTimeout(() => {
+                if (ipDisplay.textContent !== text) {
+                    ipDisplay.textContent = text;
+                }
+            }, 60 + Math.random() * 100);
+        }, 1400);
     }
 
     function typeSongCredit(text) {
@@ -49,10 +74,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 songCredit.textContent += text.charAt(charIndex);
                 charIndex++;
                 setTimeout(typeChar, 100);
+            } else {
+                startSongCreditGlitch(text);
             }
         }
 
         typeChar();
+    }
+
+    const GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
+
+    function startSongCreditGlitch(text) {
+        setInterval(() => {
+            // Skip if the credit text isn't fully visible anymore
+            if (songCredit.textContent !== text) return;
+            if (Math.random() > 0.35) return;
+
+            const glitchIndex = Math.floor(Math.random() * text.length);
+            const originalChar = text.charAt(glitchIndex);
+            songCredit.textContent = text.slice(0, glitchIndex) +
+                GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)] +
+                text.slice(glitchIndex + 1);
+
+            setTimeout(() => {
+                if (songCredit.textContent !== text) {
+                    songCredit.textContent = text;
+                }
+            }, 80 + Math.random() * 120);
+        }, 900);
     }
 
     const quotes = [
@@ -68,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let quoteIndex = 0;
     
     overlay.addEventListener('click', () => {
-        backgroundMusic.volume = 0.2;
+        backgroundMusic.volume = 0.5;
         backgroundMusic.play();
         // Request full screen
         if (document.documentElement.requestFullscreen) {
@@ -85,8 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const songCreditElement = document.getElementById('song-credit');
             console.log('songCredit element after display block:', songCreditElement);
             if (songCreditElement) {
-                typeSongCredit('Gibbs - inny ft. SVM!R');
+                typeSongCredit('ASSTER - CENTRAL feat. O.S.T.R.');
             }
+            // Start title scramble effect after content is shown
+            scrambleEffect(titleText, "K P V I", 2500, true);
         }, 500);
     });
 
@@ -121,23 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     typeQuote();
 
-    discordLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        navigator.clipboard.writeText('kpvi').then(() => {
-            notification.style.display = 'block';
-            notification.style.opacity = '0';
-            setTimeout(() => {
-                notification.style.opacity = '1';
-            }, 50);
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 1000);
-            }, 2000);
-        });
-    });
-
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
     
     function scrambleEffect(textNode, finalString, durationMs = 1500, updateTitle = false) {
@@ -166,11 +200,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, intervalTime);
     }
 
-    scrambleEffect(titleText, "[ KVCPER ]", 2500, true);
-    
     // Add scramble on hover for title
     titleText.addEventListener('mouseenter', () => {
-        scrambleEffect(titleText, "[ KVCPER ]", 800, true);
+        scrambleEffect(titleText, "K P V I", 800, true);
     });
 
     // Add scramble on hover for links
@@ -183,25 +215,64 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 3D Parallax Tilt Effect
+    // 3D Parallax Tilt Effect with smooth cursor movement
     const presenceEl = document.getElementById('presence');
+    let mouseX = 0, mouseY = 0, smoothX = 0, smoothY = 0;
+    let rafId = null;
+
     document.addEventListener('mousemove', (e) => {
-        // Push effect: side where the mouse is moves AWAY from the viewer
-        const rotateY = (e.pageX - window.innerWidth / 2) / 40;
-        const rotateX = -(e.pageY - window.innerHeight / 2) / 40;
-        
-        mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
-        
-        if (presenceEl) {
-            presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
-        }
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+        if (!rafId) rafId = requestAnimationFrame(updateTilt);
     });
 
-    document.addEventListener('mouseleave', () => {
-        mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+    function updateTilt() {
+        // Push effect: side where the mouse is moves AWAY from the viewer
+        const targetRotateY = (mouseX - window.innerWidth / 2) / 40;
+        const targetRotateX = -(mouseY - window.innerHeight / 2) / 40;
+
+        // Smooth the cursor movement with lerp
+        smoothX += (targetRotateX - smoothX) * 0.08;
+        smoothY += (targetRotateY - smoothY) * 0.08;
+
+        mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+
         if (presenceEl) {
-            presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+            presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
         }
+
+        // Keep animating while there is still movement to settle
+        if (Math.abs(targetRotateX - smoothX) > 0.01 || Math.abs(targetRotateY - smoothY) > 0.01) {
+            rafId = requestAnimationFrame(updateTilt);
+        } else {
+            smoothX = targetRotateX;
+            smoothY = targetRotateY;
+            rafId = null;
+        }
+    }
+
+    document.addEventListener('mouseleave', () => {
+        if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+        }
+        // Smooth reset back to neutral position
+        mouseX = window.innerWidth / 2;
+        mouseY = window.innerHeight / 2;
+        const reset = () => {
+            smoothX += (0 - smoothX) * 0.1;
+            smoothY += (0 - smoothY) * 0.1;
+            mainTextElement.style.transform = `translate(-50%, -50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+            if (presenceEl) {
+                presenceEl.style.transform = `translateX(-50%) perspective(1000px) rotateY(${smoothY}deg) rotateX(${smoothX}deg)`;
+            }
+            if (Math.abs(smoothX) > 0.01 || Math.abs(smoothY) > 0.01) {
+                rafId = requestAnimationFrame(reset);
+            } else {
+                rafId = null;
+            }
+        };
+        rafId = requestAnimationFrame(reset);
     });
 });
 
@@ -291,4 +362,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fetchPresence();
     setInterval(fetchPresence, 10000);
+});
+
+// ── Cursor star trail ──
+document.addEventListener('DOMContentLoaded', function() {
+    let lastX = 0, lastY = 0, lastSpawn = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        const now = performance.now();
+        const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+
+        // Spawn a star only when the cursor actually moved and not too often
+        if (dist > 18 && now - lastSpawn > 60) {
+            lastSpawn = now;
+            lastX = e.clientX;
+            lastY = e.clientY;
+
+            const star = document.createElement('span');
+            star.className = 'cursor-star';
+            star.textContent = '❄';
+            star.style.left = e.clientX + 'px';
+            star.style.top = e.clientY + 'px';
+            star.style.fontSize = (8 + Math.random() * 8) + 'px';
+            star.style.setProperty('--dx', (Math.random() * 60 - 30) + 'px');
+
+            document.body.appendChild(star);
+            star.addEventListener('animationend', () => star.remove());
+        }
+    });
 });

@@ -22,6 +22,38 @@ body::after {
     animation: flicker 0.15s infinite;
 }
 
+/* (stars-container and star styles removed) */
+
+.cursor-star {
+    position: fixed;
+    pointer-events: none;
+    color: #cfe8ff;
+    font-family: Consolas, monospace;
+    z-index: 200;
+    user-select: none;
+    text-shadow: 0 0 6px rgba(160, 210, 255, 0.9), 0 0 14px rgba(120, 180, 255, 0.5);
+    animation: star-twinkle 1.4s ease-out forwards;
+}
+
+@keyframes star-twinkle {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-50% + var(--dx, 0px) * 0.3), calc(-50% - 10px)) scale(1) rotate(20deg);
+    }
+    55% {
+        opacity: 0.9;
+        text-shadow: 0 0 10px rgba(200, 230, 255, 1), 0 0 22px rgba(140, 200, 255, 0.8);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + 20px)) scale(0.6) rotate(-30deg);
+    }
+}
+
 @keyframes flicker {
     0% { opacity: 0.95; }
     50% { opacity: 0.85; }
@@ -54,6 +86,30 @@ body::after {
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.8em;
     font-family: Consolas, monospace;
+    z-index: 40;
+    pointer-events: none;
+    animation: ip-glitch 6s infinite steps(1);
+}
+
+@keyframes ip-glitch {
+    0%, 88%, 100% {
+        opacity: 0.7;
+        transform: none;
+        text-shadow: none;
+    }
+    89% {
+        opacity: 0.25;
+        transform: translateY(-1px);
+        text-shadow: 2px 0 rgba(255, 0, 255, 0.8), -2px 0 rgba(255, 255, 0, 0.8);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(1px);
+    }
+    93% {
+        transform: translateX(1px);
+        text-shadow: -2px 0 rgba(255, 0, 255, 0.6), 2px 0 rgba(255, 255, 0, 0.6);
+    }
 }
 
 #song-credit {
@@ -65,6 +121,29 @@ body::after {
     font-size: 0.8em;
     font-family: Consolas, monospace;
     z-index: 30;
+    animation: song-credit-glitch 5s infinite steps(1);
+}
+
+@keyframes song-credit-glitch {
+    0%, 91%, 100% {
+        text-shadow: none;
+        transform: none;
+        opacity: 0.6;
+    }
+    92% {
+        transform: translate(2px, -1px);
+        text-shadow: -3px 0 rgba(255, 0, 0, 0.8), 3px 0 rgba(0, 255, 255, 0.8);
+        opacity: 1;
+    }
+    94% {
+        transform: translate(-2px, 1px);
+        text-shadow: 3px 0 rgba(255, 0, 0, 0.8), -3px 0 rgba(0, 255, 255, 0.8);
+        opacity: 1;
+    }
+    96% {
+        transform: translate(1px, 0);
+        text-shadow: -1px 0 rgba(255, 0, 0, 0.5), 1px 0 rgba(0, 255, 255, 0.5);
+    }
 }
 
 #content {
@@ -145,22 +224,6 @@ body::after {
 
 #links a::after {
     display: none;
-}
-
-#notification {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: transparent;
-    color: white;
-    padding: 7px;
-    border-radius: 0;
-    display: none;
-    transition: opacity 1.0s;
-    box-shadow: none;
-    text-align: center;
-    font-size: 1em;
 }
 
 /* ── Discord Presence Widget ── */
